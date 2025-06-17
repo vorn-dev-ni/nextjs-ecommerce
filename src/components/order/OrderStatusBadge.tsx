@@ -9,7 +9,7 @@ interface OrderStatusBadgeProps {
 
 const statusStyles: Record<
   OrderStatus,
-  { bg: string; text: string; icon: JSX.Element }
+  { bg: string; text: string; icon: React.ReactElement }
 > = {
   processing: {
     bg: "bg-blue-100 dark:bg-blue-900",
