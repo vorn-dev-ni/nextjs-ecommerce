@@ -38,7 +38,6 @@ export async function getCategories(): Promise<CategoriesResponse> {
 export async function getCategoriesBySlug(
   slug: string
 ): Promise<CategoryData[]> {
-  console.log(process.env.NEXT_PUBLIC_BASEURL);
   const categories = await axiosInstance.get<CategoryResponse>(
     `/categories?filters[name][$eq]=${slug}&populate[product][populate][images][populate]=*`
   );
@@ -95,9 +94,6 @@ export async function getFilteredCategories(
   if (filters.pageSize !== undefined) {
     params.append("pagination[pageSize]", filters.pageSize.toString());
   }
-
-  console.log("Encoded params:", params.toString());
-  console.log("Decoded params:", decodeURIComponent(params.toString()));
 
   try {
     const response = await axiosInstance.get(
