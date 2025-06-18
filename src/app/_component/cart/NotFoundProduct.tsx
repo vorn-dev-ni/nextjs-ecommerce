@@ -4,8 +4,8 @@ const NotFoundProduct = ({
   title,
   description,
 }: {
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
 }) => {
   return (
     <div className="mx-auto max-w-screen-sm text-center col-span-3 justify-center items-center self-center content-center place-items-center my-24">
