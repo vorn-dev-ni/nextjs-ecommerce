@@ -18,7 +18,7 @@ const OrderSummary = ({ id }: { id: string }) => {
       await navigator.clipboard.writeText(order?.orderNum);
       toast("Order Number has been copied to clipboard", {
         type: "info",
-        autoClose: 10000,
+        autoClose: 500,
       });
     } catch (err) {
       console.error("Failed to copy!", err);

@@ -42,7 +42,9 @@ const LoginForm = () => {
     if (state.success) {
       startTransition(() => {
         toast("Welcome backs !!!", {
-          autoClose: 3000,
+          autoClose: 1000,
+          type: "success",
+          position: "top-center",
         });
         setUser(state?.data);
         router.back();
