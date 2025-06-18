@@ -18,6 +18,9 @@ const VariantSizeItem = ({
       } ${disable ? "bg-gray-300 border-transparent" : ""}`}
     >
       <h5>{size}</h5>
+
+      {/* {sizeVariant.qty <= 0 && (
+      )} */}
     </button>
   );
 };

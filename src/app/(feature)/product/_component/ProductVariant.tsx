@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { userAtom, userCartsAtom } from "@/lib/atom";
 import { queryClient } from "@/lib/queryclient";
@@ -188,11 +189,8 @@ const ProductVariantDetail = ({
                       .find((c) => c.color === mutatePage.color)
                       ?.sizes.map((sizeVariant: any, index: any) => (
                         <div key={index}>
-                          {sizeVariant.qty <= 0 && (
-                            <p className="text-red-600 pb-2">Out of stock</p>
-                          )}
                           <VariantSizeItem
-                            disable={sizeVariant.qty <= 0}
+                            disable={false}
                             selected={mutatePage.size === sizeVariant.size}
                             size={sizeVariant.size}
                             onClick={() => {
@@ -211,6 +209,11 @@ const ProductVariantDetail = ({
                         </div>
                       ))}
                   </section>
+                  {mutatePage.totalQty <= 0 && (
+                    <p className="text-red-600 pb-2 my-2 font-bold">
+                      Out of stock
+                    </p>
+                  )}
                 </>
               ) : null}
             </div>
