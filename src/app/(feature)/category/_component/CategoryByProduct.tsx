@@ -15,6 +15,10 @@ const CategoryByProduct = ({ products }: { products: ProductData[] }) => {
             <nav className="text-sm text-gray-600">
               <Breadcrumb />
             </nav>
+
+            {/* <p className="text-sm text-gray-400 my-2">
+              Result found {products?.length}
+            </p> */}
           </div>
         </div>
       </section>

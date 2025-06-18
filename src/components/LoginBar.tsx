@@ -36,11 +36,12 @@ const LoginBar = () => {
             Login
           </button>
         ) : (
-          <AuthenticatedTabBar />
+          <>
+            <AuthenticatedTabBar />
+            <SheetCart />
+          </>
         )
       ) : null}
-
-      <SheetCart />
     </div>
   );
 };

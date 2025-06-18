@@ -27,10 +27,13 @@ const Page = async ({ params }: PageProps) => {
   const { slug } = await params;
   const result = await getCategoriesBySlug(slug);
 
-  const products = result.map(
-    (product) => product.attributes?.product?.data
-  )[0];
-  return <CategoryByProduct products={products} />;
+  const products = result.map((product) => product.attributes?.product);
+  const allProducts = products
+    .filter((item) => item.data?.length)
+    ?.map((product) => product.data)
+    .flat();
+
+  return <CategoryByProduct products={allProducts} />;
 };
 
 export default Page;

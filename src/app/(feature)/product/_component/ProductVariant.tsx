@@ -5,12 +5,13 @@ import { queryClient } from "@/lib/queryclient";
 import { ProductData, ProductVariant } from "@/types";
 import { useAtomValue } from "jotai";
 import { LoaderCircle, ShoppingCart } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import { addItemToCart, updateQtyCart } from "../_action/Cart.action";
 import ProductDetailImage from "./ProductDetailImage";
 import VariantColorItem from "./VariantProductItem";
 import VariantSizeItem from "./VariantSizeItem";
+import { redirect } from "next/navigation";
 const ProductVariantDetail = ({
   product,
   productVariants,
@@ -68,7 +69,12 @@ const ProductVariantDetail = ({
 
   const [isLoading, setLoading] = useState(false);
 
+  const isAuth = useMemo(() => user?.token && user.userId, [user]);
+
   const handleAddtocart = async () => {
+    if (!isAuth) {
+      return redirect("/login");
+    }
     if (mutatePage.qty <= 0) {
       toast("You cannot add item with 0 quantity", {
         position: "top-center",
