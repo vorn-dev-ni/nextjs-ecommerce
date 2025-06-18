@@ -1,5 +1,6 @@
 "use client";
 
+import NotFoundProduct from "@/app/_component/cart/NotFoundProduct";
 import OrderStatusBadge from "@/components/order/OrderStatusBadge";
 import { useGetUserOrder } from "@/hook/useOrder";
 import dayjs from "dayjs";
@@ -19,12 +20,18 @@ const HistoryOrderListing = () => {
       </div>
     );
   }
+
   if (isError) {
     throw new Error(error.message);
   }
 
-  if (!data) {
-    return notFound();
+  if (!data.data.length) {
+    return (
+      <NotFoundProduct
+        title="No Order"
+        description="You have no new order history, new order will appear here."
+      />
+    );
   }
 
   return (

@@ -45,7 +45,7 @@ const RegisterForm = () => {
   useEffect(() => {
     if (state.success) {
       setUser(state?.data);
-      router.replace("/");
+      router.back();
     }
   }, [state.success, router]);
 

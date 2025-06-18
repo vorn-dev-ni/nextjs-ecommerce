@@ -11,7 +11,7 @@ import { addItemToCart, updateQtyCart } from "../_action/Cart.action";
 import ProductDetailImage from "./ProductDetailImage";
 import VariantColorItem from "./VariantProductItem";
 import VariantSizeItem from "./VariantSizeItem";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 const ProductVariantDetail = ({
   product,
   productVariants,
@@ -19,6 +19,7 @@ const ProductVariantDetail = ({
   product: ProductData;
   productVariants: ProductVariant[];
 }) => {
+  const router = useRouter();
   const user = useAtomValue(userAtom);
   const userCarts = useAtomValue(userCartsAtom);
   const [mutatePage, setMutatePage] = useState({
@@ -41,8 +42,6 @@ const ProductVariantDetail = ({
     productVariants.forEach((variant) => {
       const attr = variant.attributes;
       const colorKey = attr.color;
-
-      console.log("Att color", attr.color);
 
       if (!result[colorKey]) {
         result[colorKey] = {
@@ -73,7 +72,7 @@ const ProductVariantDetail = ({
 
   const handleAddtocart = async () => {
     if (!isAuth) {
-      return redirect("/login");
+      return router.push("/login");
     }
     if (mutatePage.qty <= 0) {
       toast("You cannot add item with 0 quantity", {
@@ -127,7 +126,6 @@ const ProductVariantDetail = ({
   };
   const groupedVariants = groupVariants(productVariants);
 
-  console.log(groupedVariants);
   return (
     <div className="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">
       <ProductDetailImage selectedImageUrl={mutatePage?.imageUrl ?? ""} />

@@ -45,7 +45,7 @@ const LoginForm = () => {
           autoClose: 3000,
         });
         setUser(state?.data);
-        router.replace("/");
+        router.back();
       });
     }
   }, [state.success, router]);
