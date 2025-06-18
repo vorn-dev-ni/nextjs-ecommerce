@@ -41,7 +41,7 @@ const LoginForm = () => {
   useEffect(() => {
     if (state.success) {
       startTransition(() => {
-        toast("Welcome back !!!", {
+        toast("Welcome backs !!!", {
           autoClose: 3000,
         });
         setUser(state?.data);
