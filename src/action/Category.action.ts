@@ -26,15 +26,30 @@ export interface CategoryResponse {
     };
   };
 }
-
 export async function getCategories(): Promise<CategoriesResponse> {
-  console.log(process.env.NEXT_PUBLIC_BASEURL);
-  const categories = await axiosInstance.get(
-    `/categories?populate[image][fields]=url`
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASEURL}/categories?populate[image][fields]=url`,
+    {
+      next: { revalidate: 60 },
+    }
   );
 
-  return categories?.data;
+  if (!res.ok) {
+    throw new Error("Failed to fetch categories");
+  }
+
+  const data = await res.json();
+  return data;
 }
+
+// export async function getCategories(): Promise<CategoriesResponse> {
+//   console.log(process.env.NEXT_PUBLIC_BASEURL);
+//   const categories = await axiosInstance.get(
+//     `/categories?populate[image][fields]=url`
+//   );
+
+//   return categories?.data;
+// }
 export async function getCategoriesBySlug(
   slug: string
 ): Promise<CategoryData[]> {

@@ -2,15 +2,19 @@ import axiosInstance from "@/lib/api";
 import { ProductApiResponse } from "@/types";
 
 export async function getProduct(): Promise<ProductApiResponse> {
-  try {
-    const product = await axiosInstance.get(
-      `/products?[populate][images][fields]=url`
-    );
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASEURL}/products?populate[images][fields]=url`,
+    {
+      next: { revalidate: 60 },
+    }
+  );
 
-    return product?.data;
-  } catch (error: any) {
-    throw new Error(error?.message);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch products: ${res.statusText}`);
   }
+
+  const data: ProductApiResponse = await res.json();
+  return data;
 }
 
 export async function getProductSimilar({

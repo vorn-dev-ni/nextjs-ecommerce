@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { getProduct } from "@/action/Product.action";
 import ProductItem from "./ProductItem";
 
