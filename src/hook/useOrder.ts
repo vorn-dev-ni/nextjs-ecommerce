@@ -5,7 +5,7 @@ import {
   getUserHistory,
 } from "@/app/(checkout)/order-history/_action/Order.action";
 import { userAtom } from "@/lib/atom";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useAtomValue } from "jotai";
 
 export const useGetOrderById = ({
@@ -27,8 +27,14 @@ export const useGetUserOrder = ({ queryKey }: { queryKey: string }) => {
   const user = useAtomValue(userAtom);
   return useQuery({
     queryKey: [queryKey, user?.userId],
+    refetchOnMount: false,
+    placeholderData: keepPreviousData,
+    refetchOnWindowFocus: false,
     enabled: !!(user?.userId && user?.token),
-    queryFn: () => getUserHistory(user?.token ?? "", user?.userId ?? ""),
+    queryFn: () => {
+      console.log("🚀 Fetching orders...");
+      return getUserHistory(user?.token ?? "", user?.userId ?? "");
+    },
   });
 };
 
@@ -42,6 +48,9 @@ export const useGetOrderNumber = ({
   const user = useAtomValue(userAtom);
   return useQuery({
     queryKey: [queryKey, orderNum],
+    staleTime: Infinity,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
     enabled: !!(orderNum && user?.token),
     queryFn: () => getOrderDetail(user?.token ?? "", orderNum),
   });

@@ -8,7 +8,7 @@ import { notFound } from "next/navigation";
 import { toast } from "react-toastify";
 
 const OrderSummary = ({ id }: { id: string }) => {
-  const { data, isLoading, isError, error, isPending } = useGetOrderNumber({
+  const { data, isError, error, isPending } = useGetOrderNumber({
     queryKey: "order-detail-user-check",
     orderNum: id,
   });
@@ -30,7 +30,7 @@ const OrderSummary = ({ id }: { id: string }) => {
     throw new Error(error.message);
   }
 
-  if (isLoading || isPending) {
+  if (isPending) {
     return (
       <div className="flex justify-center w-full items-center h-[70vh]">
         <LoaderIcon className="animate-spin" />

@@ -14,8 +14,6 @@ export const getUserHistory = async (token: string, userId: string) => {
       }
     );
 
-    console.log("history", response.data);
-
     return response.data || [];
   } catch (err: any) {
     if (axios.isAxiosError(err)) {

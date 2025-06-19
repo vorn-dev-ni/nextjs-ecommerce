@@ -49,6 +49,8 @@ const CheckoutForm = () => {
     );
   };
 
+  const [isLoading, setLoading] = useState(false);
+
   const router = useRouter();
   const subTotal = useAtomValue(subtotalAtom);
   const user = useAtomValue(userAtom);
@@ -101,10 +103,15 @@ const CheckoutForm = () => {
       queryClient.invalidateQueries({
         queryKey: ["userId", user?.userId],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["order-history-listing"],
+      });
     };
 
     if (state.success) {
+      setLoading(true);
       deleteAllCarts();
+      setLoading(false);
 
       router.replace(`/checkout-success/${state.data}`);
     }
@@ -122,7 +129,7 @@ const CheckoutForm = () => {
         action={formAction}
         className="mx-auto max-w-screen-xl px-4 2xl:px-0"
       >
-        {isPending && <LoadingSpinner />}
+        {(isPending || isLoading) && <LoadingSpinner />}
         <div className="mt-6 sm:mt-8 lg:flex lg:items-start lg:gap-12 xl:gap-16">
           <div className="min-w-0 flex-1 space-y-8">
             <div className="space-y-4">
