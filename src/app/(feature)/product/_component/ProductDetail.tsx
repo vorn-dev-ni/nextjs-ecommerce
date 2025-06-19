@@ -122,6 +122,7 @@ const ProductVariantDetail = ({
     toast("Your item has been added to carts", {
       position: "top-center",
       autoClose: 1000,
+      pauseOnHover: false,
       type: "success",
       draggable: false,
     });
