@@ -36,7 +36,7 @@ const ProductZoomImage = ({ imageUrl }: Props) => {
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="relative w-full   lg:h-[400px] border overflow-hidden object-cover"
+      className="relative w-full border overflow-hidden object-cover bg-gray-100"
       style={{
         backgroundImage: `url(${imageUrl})`,
         backgroundSize: isZoomed ? "150%" : "100%",
@@ -50,7 +50,7 @@ const ProductZoomImage = ({ imageUrl }: Props) => {
         alt={`zoom-image-${imageUrl}`}
         width={800}
         height={800}
-        className="opacity-0 w-full h-full hover:cursor-zoom-in"
+        className="opacity-0 w-full h-full hover:cursor-zoom-in  "
       />
     </div>
   );

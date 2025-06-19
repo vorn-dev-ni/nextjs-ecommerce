@@ -1,7 +1,8 @@
 import { getProductBySlug } from "@/action/Product.action";
 import { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
-import ProductVariantV1 from "../_component/ProductVariant";
+import ProductVariantDetail from "../_component/ProductDetail";
+import RelatedProduct from "../_component/RelatedProduct";
 
 type Props = {
   params: Promise<{
@@ -21,6 +22,7 @@ export async function generateMetadata(
     notFound();
   }
   const singleProduct = product?.data[0]?.attributes;
+
   return {
     title: singleProduct?.name,
     description: singleProduct?.description,
@@ -55,7 +57,7 @@ const Page = async ({ params }: Props) => {
     <section className=" bg-white  py-14   dark:bg-gray-900 antialiased">
       <div className="max-w-screen-xl px-4 mx-auto 2xl:px-0">
         {product && productVariants && (
-          <ProductVariantV1
+          <ProductVariantDetail
             product={product}
             productVariants={productVariants!}
           />

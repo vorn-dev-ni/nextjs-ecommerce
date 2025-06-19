@@ -6,11 +6,7 @@ const ProductDetailImage = ({
 }: {
   selectedImageUrl: string;
 }) => {
-  return (
-    <div className="  md:max-w-md mx-auto">
-      <ProductZoomImage imageUrl={selectedImageUrl ?? ""} />
-    </div>
-  );
+  return <ProductZoomImage imageUrl={selectedImageUrl ?? ""} />;
 };
 
 export default ProductDetailImage;

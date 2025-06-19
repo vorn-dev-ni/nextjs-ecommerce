@@ -5,7 +5,7 @@ import React from "react";
 
 const AppImage = ({ imageUrl, styles }: { imageUrl: string; styles: any }) => {
   return (
-    <div className="group relative overflow-hidden">
+    <div className="group relative overflow-hidden bg-gray-300 rounded-lg">
       <Image
         alt={`product-${imageUrl}`}
         src={imageUrl}

@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { useSetAtom } from "jotai";
 import { userAtom } from "@/lib/atom";
 import { toast } from "react-toastify";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 type State = {
   success: boolean;
@@ -32,6 +33,7 @@ const LoginForm = () => {
   };
   const router = useRouter();
   const [email, setEmail] = useState("");
+  const [isLoading, setLoading] = useState(false);
   const [password, setPassword] = useState("");
   const setUser = useSetAtom(userAtom);
   const [state, formAction, isPending] = useActionState(
@@ -40,20 +42,27 @@ const LoginForm = () => {
   );
   useEffect(() => {
     if (state.success) {
+      setLoading(true);
       startTransition(() => {
-        toast("Welcome backs !!!", {
-          autoClose: 1000,
-          type: "success",
-          position: "top-center",
-        });
         setUser(state?.data);
-        router.back();
+
+        setTimeout(() => {
+          router.back();
+          setLoading(false);
+          toast(`Welcome backs !!!`, {
+            autoClose: 1000,
+            pauseOnHover: false,
+            type: "success",
+            position: "top-center",
+          });
+        }, 1000);
       });
     }
   }, [state.success, router]);
 
   return (
     <form className="space-y-4 md:space-y-6" action={formAction}>
+      {(isPending || isLoading) && <LoadingSpinner />}
       <div>
         <label
           htmlFor="email"

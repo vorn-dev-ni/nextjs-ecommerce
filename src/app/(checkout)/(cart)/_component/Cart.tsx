@@ -60,6 +60,7 @@ const Cart = ({
         toast("Item qty has reach limit.", {
           type: "error",
           autoClose: 500,
+          pauseOnHover: false,
         });
       }
       setTimeout(() => {
@@ -68,6 +69,7 @@ const Cart = ({
     } catch (error: any) {
       toast(error, {
         type: "error",
+        pauseOnHover: false,
       });
       setLoading(false);
     }
@@ -103,6 +105,7 @@ const Cart = ({
       toast(error, {
         type: "error",
         autoClose: 500,
+        pauseOnHover: false,
       });
       setLoading(false);
     }
@@ -119,6 +122,7 @@ const Cart = ({
     } catch (error: any) {
       toast(error, {
         type: "error",
+        pauseOnHover: false,
       });
       setLoading(false);
     }

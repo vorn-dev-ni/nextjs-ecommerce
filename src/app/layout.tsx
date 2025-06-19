@@ -7,7 +7,7 @@ import "./globals.css";
 import PaypalProvider from "./paypalprovider";
 import TanStackProvider from "./tanstack";
 import ToastProvider from "./toastprovider";
-
+import "react-loading-skeleton/dist/skeleton.css";
 export const metadata: Metadata = {
   title: "GenzCommerce Product",
   description:

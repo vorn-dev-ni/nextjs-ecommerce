@@ -19,6 +19,7 @@ const OrderSummary = ({ id }: { id: string }) => {
       toast("Order Number has been copied to clipboard", {
         type: "info",
         autoClose: 500,
+        pauseOnHover: false,
       });
     } catch (err) {
       console.error("Failed to copy!", err);

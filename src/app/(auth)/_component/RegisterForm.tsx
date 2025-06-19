@@ -1,11 +1,13 @@
 "use client";
+import LoadingSpinner from "@/components/LoadingSpinner";
 import { Button } from "@/components/ui/button";
 import { userAtom } from "@/lib/atom";
 import { useSetAtom } from "jotai";
 import { LoaderIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useActionState, useEffect, useState } from "react";
+import { startTransition, useActionState, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { registerAction } from "../_action/register.action";
 
 type State = {
@@ -38,19 +40,35 @@ const RegisterForm = () => {
     cfpassword: "",
   });
   const setUser = useSetAtom(userAtom);
+  const [isLoading, setLoading] = useState(false);
   const [state, formAction, isPending] = useActionState(
     actionHandler,
     initialState
   );
   useEffect(() => {
     if (state.success) {
-      setUser(state?.data);
-      router.back();
+      setLoading(true);
+      startTransition(() => {
+        setUser(state?.data);
+
+        setTimeout(() => {
+          router.back();
+          setLoading(false);
+          toast(`Welcome new user !!!`, {
+            autoClose: 1000,
+            pauseOnHover: false,
+            type: "success",
+            position: "top-center",
+          });
+        }, 1000);
+      });
     }
   }, [state.success, router]);
 
   return (
     <form className="space-y-4 md:space-y-6" action={formAction}>
+      {(isPending || isLoading) && <LoadingSpinner />}
+
       <div>
         <label
           htmlFor="username"

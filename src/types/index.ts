@@ -113,6 +113,21 @@ export interface ProductVariant {
     image: ImageRelation;
   };
 }
+export interface CategoryResponse {
+  data: Category[];
+}
+
+export interface Category {
+  id: number;
+  attributes: CategoryAttributes;
+}
+
+export interface CategoryAttributes {
+  name: string;
+  createdAt: string; // ISO date string
+  updatedAt: string;
+  publishedAt: string;
+}
 
 export interface ProductAttributes {
   name: string;
@@ -125,6 +140,7 @@ export interface ProductAttributes {
   publishedAt: string;
   qty: number;
   images: ImageRelation;
+  categories: CategoryResponse;
   product_variants?: ProductVariantRelation;
 }
 

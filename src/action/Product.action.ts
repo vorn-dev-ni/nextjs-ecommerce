@@ -13,11 +13,31 @@ export async function getProduct(): Promise<ProductApiResponse> {
   }
 }
 
+export async function getProductSimilar({
+  params,
+}: {
+  params: {
+    category: string;
+    currentProductName: string;
+  };
+}): Promise<ProductApiResponse> {
+  try {
+    const category = params.category;
+    const productName = params.currentProductName;
+    const response = await axiosInstance.get(
+      `/products?filters[categories][name][$eq]=${category}&filters[name][$ne]=${productName}&populate=*`
+    );
+
+    return response?.data;
+  } catch (error: any) {
+    throw new Error(error?.message);
+  }
+}
+
 export async function getProductBySlug(
   slug: string
 ): Promise<ProductApiResponse> {
   try {
-    // http://localhost:1337/api/products?filters[slug][$eq]=women-under-shirt&pagination[limit]=1&populate[images][fields][0]=url&populate[product_variants][populate][color][populate]=image&populate[product_variants][populate][size][populate]
     const product = await axiosInstance.get(
       `/products
 ?filters[slug][$eq]=${slug}
@@ -26,6 +46,7 @@ export async function getProductBySlug(
 &populate[product_variants][populate][size][populate]=*
 &populate[product_variants][populate][color][populate]=*
 &populate[product_variants][populate][image][fields][0]=url
+&populate[categories]=*
 `
     );
 

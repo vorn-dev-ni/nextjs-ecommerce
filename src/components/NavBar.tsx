@@ -2,7 +2,6 @@ import { getCategories } from "@/action/Category.action";
 import Image from "next/image";
 import CategorySmallTab from "./CategorySmallTab";
 import LoginBar from "./LoginBar";
-import SearchBar from "./SearchBar";
 
 const NavBar = async () => {
   const categories = await getCategories();

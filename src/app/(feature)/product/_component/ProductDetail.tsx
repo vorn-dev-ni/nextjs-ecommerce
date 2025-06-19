@@ -1,18 +1,18 @@
 "use client";
-import React from "react";
 import { Button } from "@/components/ui/button";
 import { userAtom, userCartsAtom } from "@/lib/atom";
 import { queryClient } from "@/lib/queryclient";
 import { ProductData, ProductVariant } from "@/types";
 import { useAtomValue } from "jotai";
 import { LoaderCircle, ShoppingCart } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import { addItemToCart, updateQtyCart } from "../_action/Cart.action";
 import ProductDetailImage from "./ProductDetailImage";
+import RelatedProduct from "./RelatedProduct";
 import VariantColorItem from "./VariantProductItem";
 import VariantSizeItem from "./VariantSizeItem";
-import { redirect, useRouter } from "next/navigation";
 const ProductVariantDetail = ({
   product,
   productVariants,
@@ -23,6 +23,7 @@ const ProductVariantDetail = ({
   const router = useRouter();
   const user = useAtomValue(userAtom);
   const userCarts = useAtomValue(userCartsAtom);
+
   const [mutatePage, setMutatePage] = useState({
     size: productVariants?.[0]?.attributes?.Sizes,
     color: productVariants?.[0]?.attributes?.color,
@@ -68,7 +69,6 @@ const ProductVariantDetail = ({
   }
 
   const [isLoading, setLoading] = useState(false);
-
   const isAuth = useMemo(() => user?.token && user.userId, [user]);
 
   const handleAddtocart = async () => {
@@ -79,6 +79,7 @@ const ProductVariantDetail = ({
       toast("You cannot add item with 0 quantity", {
         position: "top-center",
         autoClose: 1000,
+        pauseOnHover: false,
         type: "error",
         draggable: false,
       });
@@ -126,12 +127,14 @@ const ProductVariantDetail = ({
     });
   };
   const groupedVariants = groupVariants(productVariants);
+  const categoryType =
+    product?.attributes?.categories?.data?.[0]?.attributes?.name;
 
   return (
-    <div className="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">
+    <div className="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16 my-12">
       <ProductDetailImage selectedImageUrl={mutatePage?.imageUrl ?? ""} />
-      <div className="mt-4 sm:mt-8 lg:mt-0">
-        <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white pt-4">
+      <div className="main-detail">
+        <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
           {product.attributes?.name}
         </h1>
         <div className="mt-4 sm:items-center sm:gap-4 sm:flex">
@@ -272,6 +275,11 @@ const ProductVariantDetail = ({
             "This product has no description."}
         </p>
       </div>
+
+      <RelatedProduct
+        category={categoryType ?? ""}
+        currProductName={product?.attributes?.name ?? ""}
+      />
     </div>
   );
 };

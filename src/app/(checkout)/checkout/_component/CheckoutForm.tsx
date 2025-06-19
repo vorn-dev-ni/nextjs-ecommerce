@@ -2,16 +2,15 @@
 import { deleteCart } from "@/app/(feature)/product/_action/Cart.action";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { subtotalAtom, userAtom, userCartsAtom } from "@/lib/atom";
+import { queryClient } from "@/lib/queryclient";
 import { OrderState } from "@/types";
 import { OnApproveData } from "@paypal/paypal-js";
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import { useAtomValue } from "jotai";
 import { redirect, useRouter } from "next/navigation";
 import { useActionState, useEffect, useMemo, useRef, useState } from "react";
-import { toast } from "react-toastify";
 import { onPaymentAction } from "../_action/Payment.action";
 import ProvinceSelectOptions from "./ProvinceSelectOptions";
-import { queryClient } from "@/lib/queryclient";
 
 const defaultState = {
   fullName: "",
