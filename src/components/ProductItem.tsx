@@ -28,11 +28,11 @@ const ProductItem = ({ product }: { product: ProductAttributes }) => {
           ${product.price}
         </p>
       </div>
-      {product.qty < 10 && (
+      {/* {product.qty < 10 && (
         <p className="text-sm font-bold text-red-500">
           Only {product.qty} left
         </p>
-      )}
+      )} */}
     </div>
   );
 };
