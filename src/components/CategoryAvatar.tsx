@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { getCategories } from "@/action/Category.action";
 import AvatarCategoryItem from "./AvatarCategoryItem";
 
