@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import CategoryAvatar from "@/components/CategoryAvatar";
 import NavBar from "@/components/NavBar";
 import ProductMainSection from "@/components/ProductMain";
