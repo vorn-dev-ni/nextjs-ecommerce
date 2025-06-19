@@ -98,21 +98,25 @@ const ProductVariantDetail = ({
     if (!preCarts) {
       const payload = {
         users_permissions_user: user?.userId ?? "",
-        qty: mutatePage?.qty,
+        qty: parseInt(mutatePage?.qty?.toString()),
         product_variant: mutatePage?.productId,
         price: mutatePage?.selectedPrice,
         userId: user?.userId!,
-        amt: mutatePage?.qty * mutatePage?.selectedPrice,
+        amt: parseFloat(
+          (mutatePage?.qty * mutatePage?.selectedPrice)?.toString()
+        ),
       };
       await addItemToCart(payload, user?.token ?? "");
     } else {
       const payload = {
         users_permissions_user: user?.userId ?? "",
-        qty: mutatePage?.qty,
+        qty: parseInt(mutatePage?.qty?.toString()),
         product_variant: mutatePage?.productId,
         price: mutatePage?.selectedPrice,
         userId: user?.userId!,
-        amt: mutatePage?.qty * mutatePage?.selectedPrice,
+        amt: parseFloat(
+          (mutatePage?.qty * mutatePage?.selectedPrice)?.toString()
+        ),
       };
       await updateQtyCart(preCarts?.id, payload, user?.token ?? "");
     }

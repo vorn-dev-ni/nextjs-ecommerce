@@ -57,9 +57,9 @@ const Cart = ({
         await updateQtyCart(cart?.id, payload, user?.token ?? "");
         queryClient.invalidateQueries({ queryKey: ["userId", user?.userId] });
       } else {
-        toast("Item qty has reach limit.", {
+        toast("Item quantity has reach the stock limit.", {
           type: "error",
-          autoClose: 500,
+          autoClose: 2000,
           pauseOnHover: false,
         });
       }

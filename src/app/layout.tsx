@@ -11,6 +11,24 @@ import TanStackProvider from "./tanstack";
 import ToastProvider from "./toastprovider";
 export const metadata: Metadata = {
   title: "GenzCommerce Product",
+  keywords: [
+    "e-commerce",
+    "online store",
+    "customizable platform",
+    "scalable e-commerce",
+    "modern e-commerce",
+    "GenzCommerce",
+    "online business",
+    "e-commerce solution",
+    "next generation e-commerce",
+    "shopping platform",
+    "digital commerce",
+    "SaaS e-commerce",
+    "multi-vendor platform",
+    "B2B e-commerce",
+    "B2C e-commerce",
+  ],
+
   description:
     "GenzCommerce Product is a modern, scalable, and customizable e-commerce platform designed for the next generation of online businesses.",
   openGraph: {
