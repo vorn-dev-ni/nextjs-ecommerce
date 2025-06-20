@@ -3,11 +3,11 @@
 import { cn } from "@/lib/utils";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 function Breadcrumb({ className }: { className?: string }) {
   const pathname = usePathname();
-
+  const router = useRouter();
   const segments = pathname
     .split("/")
     .filter((segment) => segment.length > 0 && segment !== "category");
@@ -28,9 +28,12 @@ function Breadcrumb({ className }: { className?: string }) {
         className
       )}
     >
-      <Link href="/" className="hover:underline text-blue-500">
+      <button
+        onClick={() => router.back()}
+        className="hover:underline text-blue-500"
+      >
         Home
-      </Link>
+      </button>
       {crumbs.map((crumb, index) => (
         <div key={index} className="flex items-center">
           <ChevronRight className="mx-2 h-4 w-4" />

@@ -10,5 +10,5 @@ export default function ScrollReset() {
     window.scrollTo(0, 0);
   }, [pathname]);
 
-  return null; // no UI needed
+  return null;
 }

@@ -37,7 +37,7 @@ export const metadata: Metadata = {
       "GenzCommerce Product is a modern, scalable, and customizable e-commerce platform designed for the next generation of online businesses.",
     images: [
       {
-        url: "https://d23k61tiwy13nu.cloudfront.net/66bb9e85eba9d69dd1c9d76ec29fc7d9ef3d6828_1024x504_1_a4ecfea89c.png",
+        url: "https://d23k61tiwy13nu.cloudfront.net/android_chrome_192x192_db52edaa20.png",
         width: 1200,
         height: 630,
         alt: "app-image",
