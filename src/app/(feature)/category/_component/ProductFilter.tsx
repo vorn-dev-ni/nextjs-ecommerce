@@ -5,7 +5,7 @@ import { useFilterCategory } from "@/hook/useCategory";
 import { filterAtom } from "@/lib/atom";
 import { CategoriesResponse } from "@/types";
 import { useAtom } from "jotai";
-import debounce from "lodash/debounce";
+import { debounce } from "lodash";
 import { X } from "lucide-react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
