@@ -47,8 +47,8 @@ export async function getCategoriesBySlug(
 ): Promise<CategoryData[]> {
   const categories = await axiosInstance.get<CategoryResponse>(
     slug != "all"
-      ? `/categories?filters[name][$eq]=${slug}&populate[product][populate][images][populate]=*`
-      : `/categories?populate[product][populate][images][populate]=*`
+      ? `/categories?filters[name][$eq]=${slug}&populate[product][populate][images][populate]=*&pagination[pageSize]=1`
+      : `/categories?populate[product][populate][images][populate]=*&pagination[pageSize]=1`
   );
 
   // console.log("getCategoriesBySlug", categories.data?.data?.length);

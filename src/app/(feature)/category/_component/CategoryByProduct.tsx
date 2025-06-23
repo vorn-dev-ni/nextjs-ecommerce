@@ -1,7 +1,8 @@
 import { getCategories } from "@/action/Category.action";
 import Breadcrumb from "@/app/_component/BreadCread";
-import ProductFilterTailwind from "./ProductFilter";
+import { LoaderIcon } from "lucide-react";
 import { Suspense } from "react";
+import ProductFiltering from "./ProductFilter";
 
 const CategoryByProduct = async () => {
   const categories = await getCategories();
@@ -20,8 +21,19 @@ const CategoryByProduct = async () => {
         </div>
       </section>
 
-      <Suspense>
-        <ProductFilterTailwind categories={categories} />
+      <Suspense
+        fallback={
+          <div className="w-full flex justify-center min-h-96  items-center">
+            <LoaderIcon
+              className="animate-spin"
+              size={48}
+              strokeWidth={2}
+              color="#2563eb"
+            />
+          </div>
+        }
+      >
+        <ProductFiltering categories={categories} />
       </Suspense>
     </div>
   );

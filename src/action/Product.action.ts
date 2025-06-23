@@ -16,6 +16,21 @@ export async function getProduct(): Promise<ProductApiResponse> {
   const data: ProductApiResponse = await res.json();
   return data;
 }
+export async function getBestProducts(): Promise<ProductApiResponse> {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASEURL}/products?populate[images][fields]=url&pagination[pageSize]=10`,
+    {
+      next: { revalidate: 120 },
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch products: ${res.statusText}`);
+  }
+
+  const data: ProductApiResponse = await res.json();
+  return data;
+}
 
 export async function getProductSimilar({
   params,

@@ -5,25 +5,27 @@ type PageProps = {
   params: Promise<{
     slug: string;
   }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 export async function generateMetadata({
   params,
+  searchParams,
 }: PageProps): Promise<Metadata> {
-  const { slug } = await params;
-  const result = await getCategoriesBySlug(slug);
-  const category = result?.[0];
+  const searchParamsObj = await searchParams;
+  const categorySlug = searchParamsObj.name ?? "all";
 
+  const result =
+    categorySlug != "all"
+      ? await getCategoriesBySlug(categorySlug as string)
+      : null;
+  const name = result?.[0]?.attributes?.name ?? "General";
   return {
-    title: `GenzCommerce | ${category?.attributes?.name ?? "Category"}`,
-    description: `Browse genz ecommerce under category ${
-      category?.attributes?.name ?? "Category"
-    }. Find the best deals and offers.`,
+    title: `GenzCommerce | ${name}`,
+    description: `Browse genz ecommerce under category ${name}. Find the best deals and offers.`,
     keywords: ["ecommerce", "genz", "category", "search"],
     openGraph: {
-      title: `GenzCommerce | ${category?.attributes?.name ?? "Category"}`,
-      description: `Browse genz ecommerce under category ${
-        category?.attributes?.name ?? "Category"
-      }. Find the best deals and offers.`,
+      title: `GenzCommerce | ${name}`,
+      description: `Browse genz ecommerce under category ${name}. Find the best deals and offers.`,
     },
   };
 }

@@ -1,13 +1,13 @@
 "use client";
+import NotFoundProduct from "@/app/_component/cart/NotFoundProduct";
 import { useProductSuggestion } from "@/hook/useProduct";
 import { filterAtom, recentSearchAtom } from "@/lib/atom";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { debounce } from "lodash";
 import { Search, ShoppingBag, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { Suspense, useCallback, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import ClearIconButton from "./ClearIconButton";
-import NotFoundProduct from "@/app/_component/cart/NotFoundProduct";
 
 const SearchBar = () => {
   const setFilters = useSetAtom(filterAtom);
@@ -218,9 +218,7 @@ const SearchBar = () => {
           </ul>
         )}
 
-        <Suspense>
-          <ClearIconButton onClear={() => setShowSuggestions(false)} />
-        </Suspense>
+        <ClearIconButton onClear={() => setShowSuggestions(false)} />
       </div>
       {showSuggestions && (
         <div

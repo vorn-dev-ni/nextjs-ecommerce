@@ -1,9 +1,9 @@
 import { getCategories } from "@/action/Category.action";
 import Image from "next/image";
+import { Suspense } from "react";
 import CategorySmallTab from "./CategorySmallTab";
 import LoginBar from "./LoginBar";
 import SearchBar from "./SearchBar";
-import { Suspense } from "react";
 
 const NavBar = async () => {
   const categories = await getCategories();
@@ -40,7 +40,9 @@ const NavBar = async () => {
           </Suspense>
         </div>
       </div>
-      <CategorySmallTab category={categories?.data} />
+      <Suspense>
+        <CategorySmallTab category={categories?.data} />
+      </Suspense>
     </nav>
   );
 };
