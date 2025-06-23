@@ -36,8 +36,8 @@ const SheetCart = () => {
         </main>
       </SheetTrigger>
       <SheetContent>
-        <SheetHeader className="text-md font-bold text-gray-900 sm:text-xl pb-1 ">
-          <SheetTitle>Your Shopping Cart</SheetTitle>
+        <SheetHeader className="text-md font-bold text-gray-900 sm:text-xl pb-1 overflow-y-scroll ">
+          <SheetTitle className="sticky">Your Shopping Cart</SheetTitle>
           <SheetDescription asChild>
             <Cart
               onCheckout={() => {
