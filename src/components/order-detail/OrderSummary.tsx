@@ -46,7 +46,7 @@ const OrderSummary = ({ id }: { id: string }) => {
   return (
     <div className="px-4 md:px-0 container mx-auto max-w-3xl py-24 ">
       <div className="flex justify-start item-start space-y-2 flex-col pt-4 md:pt-4 sm:px-0">
-        <Breadcrumb />
+        <Breadcrumb className="my-4" />
         <h1
           onClick={handleCopy}
           className="text-xl lg:text-xl font-semibold leading-7 lg:leading-9  text-gray-800 hover:cursor-pointer"

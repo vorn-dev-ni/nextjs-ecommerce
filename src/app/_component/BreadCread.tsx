@@ -27,7 +27,11 @@ function Breadcrumb({ className }: { className?: string }) {
       )}
     >
       <button
-        onClick={() => router.back()}
+        onClick={() =>
+          router.push("/", {
+            scroll: false,
+          })
+        }
         className="hover:underline text-blue-500"
       >
         Home
