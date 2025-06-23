@@ -1,6 +1,6 @@
 import axiosInstance from "@/lib/api";
 import { FilterOptions } from "@/lib/atom";
-import { CategoriesResponse, ProductData } from "@/types";
+import { CategoriesResponse, ProductApiResponse, ProductData } from "@/types";
 
 export interface CategoryData {
   id: number;
@@ -42,14 +42,6 @@ export async function getCategories(): Promise<CategoriesResponse> {
   return data;
 }
 
-// export async function getCategories(): Promise<CategoriesResponse> {
-//   console.log(process.env.NEXT_PUBLIC_BASEURL);
-//   const categories = await axiosInstance.get(
-//     `/categories?populate[image][fields]=url`
-//   );
-
-//   return categories?.data;
-// }
 export async function getCategoriesBySlug(
   slug: string
 ): Promise<CategoryData[]> {
@@ -72,8 +64,7 @@ export async function getFilteredCategories(
   params.append("populate[product_variants][populate][size]", "true");
   params.append("populate[categories]", "true");
   params.append("populate[images]", "true");
-
-  if (filters.categorySlug) {
+  if (filters.categorySlug && filters.categorySlug != "all") {
     params.append("filters[categories][name][$eq]", filters.categorySlug);
   }
 
@@ -93,14 +84,18 @@ export async function getFilteredCategories(
 
   if (filters.color && filters.color.length > 0) {
     params.append(
-      "filters[product_variants][color][name][$in]",
-      filters.color.map((c) => c.toLowerCase()).join(",")
+      "filters[product_variants][color][$in]",
+      filters.color.map((c) => c).join(",")
     );
+  }
+
+  if (filters?.search) {
+    params.append("filters[name][$containsi]", filters.search);
   }
 
   if (filters.size && filters.size.length > 0) {
     params.append(
-      "filters[product_variants][size][name][$in]",
+      "filters[product_variants][Sizes][$in]",
       filters.size.join(",")
     );
   }
@@ -112,13 +107,15 @@ export async function getFilteredCategories(
   if (filters.pageSize !== undefined) {
     params.append("pagination[pageSize]", filters.pageSize.toString());
   }
+  if (filters.orderBy !== undefined) {
+    params.append("sort[0]", `id:${filters.orderBy?.toLowerCase()}`);
+  }
 
   try {
-    const response = await axiosInstance.get(
+    const response = await axiosInstance.get<ProductApiResponse>(
       `/products?${decodeURIComponent(params.toString())}`
     );
 
-    console.log("Product is", response.data);
     return response.data;
   } catch (error) {
     console.error("Failed to fetch filtered products:", error);

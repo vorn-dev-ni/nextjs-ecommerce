@@ -59,3 +59,17 @@ export async function getProductBySlug(
     throw new Error(error?.message);
   }
 }
+
+export async function getSuggestionProducts({
+  query,
+}: {
+  query: string;
+}): Promise<ProductApiResponse> {
+  const products = await axiosInstance.get(
+    `/products?filters[name][$containsi]=${query
+      ?.trim()
+      ?.toLowerCase()}&pagination[pageSize]=10`
+  );
+
+  return products?.data;
+}

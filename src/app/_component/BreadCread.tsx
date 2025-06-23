@@ -8,9 +8,7 @@ import { usePathname, useRouter } from "next/navigation";
 function Breadcrumb({ className }: { className?: string }) {
   const pathname = usePathname();
   const router = useRouter();
-  const segments = pathname
-    .split("/")
-    .filter((segment) => segment.length > 0 && segment !== "category");
+  const segments = pathname.split("/").filter((segment) => segment.length > 0);
 
   const crumbs = segments.map((segment, index) => {
     const href = "/" + segments.slice(0, index + 1).join("/");

@@ -22,7 +22,13 @@ export const useFilterCategory = ({
 }: UseFilterCategoryProps) => {
   return useQuery({
     queryKey: [queryKey, filters],
-    queryFn: () => getFilteredCategories(filters),
-    enabled,
+    queryFn: async () => {
+      const data = await getFilteredCategories(filters);
+
+      return data;
+    },
+    staleTime: 10 * 10000,
+
+    enabled: enabled,
   });
 };

@@ -8,7 +8,7 @@ const AvatarCategoryItem = ({ category }: { category: CategoryData }) => {
   return (
     <div
       onClick={() => {
-        router.push(`/category/${category?.attributes?.name}`);
+        router.push(`/category?name=${category?.attributes?.name}`);
       }}
       className="aspect-square w-full hover:scale-110 transition-all ease-in-out duration-300 hover:cursor-pointer"
     >

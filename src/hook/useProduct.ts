@@ -1,6 +1,9 @@
 "use client";
-import { getProductSimilar } from "@/action/Product.action";
-import { useQuery } from "@tanstack/react-query";
+import {
+  getProductSimilar,
+  getSuggestionProducts,
+} from "@/action/Product.action";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
 export const useProductSimilar = ({
   queryKey,
@@ -20,6 +23,25 @@ export const useProductSimilar = ({
           category,
           currentProductName,
         },
+      }),
+  });
+};
+
+export const useProductSuggestion = ({
+  queryKey,
+  query,
+}: {
+  queryKey: string;
+  query: string;
+}) => {
+  return useQuery({
+    queryKey: [queryKey, query],
+    enabled: true,
+    placeholderData: keepPreviousData,
+
+    queryFn: () =>
+      getSuggestionProducts({
+        query,
       }),
   });
 };

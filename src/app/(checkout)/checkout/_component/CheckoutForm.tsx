@@ -8,11 +8,12 @@ import { OnApproveData } from "@paypal/paypal-js";
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import { useAtomValue } from "jotai";
 import { redirect, useRouter } from "next/navigation";
-import { useActionState, useEffect, useMemo, useRef, useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
 import { onPaymentAction } from "../_action/Payment.action";
 import ProvinceSelectOptions from "./ProvinceSelectOptions";
 
-const defaultState = {
+const defaultState: OrderState = {
   fullName: "",
   email: "",
   province: "PP",
@@ -32,7 +33,30 @@ const initialState: State = {
   message: "",
   data: null,
 };
+
 const CheckoutForm = () => {
+  const router = useRouter();
+  const subTotal = useAtomValue(subtotalAtom);
+  const user = useAtomValue(userAtom);
+  const carts = useAtomValue(userCartsAtom);
+  const submitRef = useRef<HTMLButtonElement>(null);
+  const [isLoading, setLoading] = useState(false);
+  const [mutateState, setMutateState] = useState<OrderState>(defaultState);
+
+  // Initialize react-hook-form
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors, isValid },
+  } = useForm<OrderState>({
+    defaultValues: defaultState,
+    mode: "all",
+  });
+
+  const province = watch("province");
+
   const actionHandler = async (
     _prevState: State,
     formData: FormData
@@ -49,70 +73,46 @@ const CheckoutForm = () => {
     );
   };
 
-  const [isLoading, setLoading] = useState(false);
-
-  const router = useRouter();
-  const subTotal = useAtomValue(subtotalAtom);
-  const user = useAtomValue(userAtom);
-  const carts = useAtomValue(userCartsAtom);
   const [state, formAction, isPending] = useActionState(
     actionHandler,
     initialState
   );
-  const submitRef = useRef<HTMLButtonElement>(null);
-  const [mutateState, setMutateState] = useState<OrderState>(defaultState);
-  const onPaymentSuccess = async (data: OnApproveData) => {
-    console.log("Payment success", data);
 
+  const onPaymentSuccess = async (data: OnApproveData) => {
     if (data) {
-      const mutateCartItems = carts?.map((cart) => {
-        return {
-          qty: cart.attributes?.qty,
-          product_variant: cart?.attributes?.product_variant?.data?.id,
-          price: cart?.attributes?.product_variant?.data?.attributes?.price,
-        };
-      });
+      const mutateCartItems = carts?.map((cart) => ({
+        qty: cart.attributes?.qty,
+        product_variant: cart?.attributes?.product_variant?.data?.id,
+        price: cart?.attributes?.product_variant?.data?.attributes?.price,
+      }));
+
       if (mutateCartItems?.length) {
-        setMutateState((pre) => ({
-          ...pre,
+        setMutateState((prev) => ({
+          ...prev,
           paymentId: data.paymentID ?? "",
           paymentSource: "paypal",
           orderItem: mutateCartItems,
         }));
       } else {
         redirect("/");
-        //Meaning user has no cart and attemp to checkout
       }
     }
   };
 
-  const isEnable = useMemo(() => {
-    const checkValue = { ...mutateState };
-    delete checkValue?.paymentId;
-    delete checkValue?.orderItem;
-    delete checkValue?.province;
-    const arr = Object.values(checkValue);
-    return arr.every((value) => value != "" && value != undefined);
-  }, [mutateState]);
   useEffect(() => {
     const deleteAllCarts = async () => {
       if (carts)
         await Promise.all(
           carts.map((cart) => deleteCart(cart.id, user?.token ?? ""))
         );
-      queryClient.invalidateQueries({
-        queryKey: ["userId", user?.userId],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["order-history-listing"],
-      });
+      queryClient.invalidateQueries({ queryKey: ["userId", user?.userId] });
+      queryClient.invalidateQueries({ queryKey: ["order-history-listing"] });
     };
 
     if (state.success) {
       setLoading(true);
       deleteAllCarts();
       setLoading(false);
-
       router.replace(`/checkout-success/${state.data}`);
     }
   }, [state.success, carts, user?.userId]);
@@ -121,7 +121,7 @@ const CheckoutForm = () => {
     if (mutateState.paymentId) {
       submitRef.current?.click();
     }
-  }, [submitRef.current, mutateState.paymentId]);
+  }, [mutateState.paymentId]);
 
   return (
     <section className="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
@@ -136,30 +136,28 @@ const CheckoutForm = () => {
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
                 Personal Details
               </h2>
-
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
                   <label
                     htmlFor="your_name"
                     className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    {" "}
-                    Your name{" "}
+                    Your name
                   </label>
                   <input
+                    {...register("fullName", {
+                      required: "Full name is required",
+                    })}
                     type="text"
                     id="your_name"
-                    name="fullName"
-                    value={mutateState.fullName}
-                    onChange={(e) =>
-                      setMutateState((pre) => ({
-                        ...pre,
-                        fullName: e.target.value?.trim(),
-                      }))
-                    }
-                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
                     placeholder="Bonnie Green"
+                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900"
                   />
+                  {errors.fullName && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.fullName.message}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -167,31 +165,31 @@ const CheckoutForm = () => {
                     htmlFor="your_email"
                     className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    {" "}
-                    Your email*{" "}
+                    Your email*
                   </label>
                   <input
+                    {...register("email", {
+                      required: "Email is required",
+                      pattern: {
+                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                        message: "Invalid email address",
+                      },
+                    })}
                     type="email"
                     id="your_email"
-                    name="email"
-                    required
-                    value={mutateState.email}
-                    onChange={(e) =>
-                      setMutateState((pre) => ({
-                        ...pre,
-                        email: e.target.value?.trim(),
-                      }))
-                    }
-                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
                     placeholder="name@ex.com"
+                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900"
                   />
+                  {errors.email && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.email.message}
+                    </p>
+                  )}
                 </div>
 
                 <ProvinceSelectOptions
-                  selected={mutateState.province!}
-                  onSelect={(province) => {
-                    setMutateState((pre) => ({ ...pre, province }));
-                  }}
+                  selected={province ?? ""}
+                  onSelect={(province) => setValue("province", province)}
                 />
 
                 <div>
@@ -199,23 +197,22 @@ const CheckoutForm = () => {
                     htmlFor="zipcode"
                     className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    {" "}
-                    Zipcode*{" "}
+                    Zipcode*
                   </label>
                   <input
+                    {...register("zipCode", {
+                      required: "Zipcode is required",
+                    })}
                     type="text"
-                    name="zipCode"
-                    value={mutateState.zipCode ?? ""}
-                    onChange={(e) =>
-                      setMutateState((pre) => ({
-                        ...pre,
-                        zipCode: e.target.value?.trim(),
-                      }))
-                    }
                     id="zipcode"
-                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
                     placeholder="Enter your zipcode"
+                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900"
                   />
+                  {errors.zipCode && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.zipCode.message}
+                    </p>
+                  )}
                 </div>
 
                 <div className="col-span-2">
@@ -223,26 +220,24 @@ const CheckoutForm = () => {
                     htmlFor="address"
                     className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    {" "}
-                    Your Address*{" "}
+                    Your Address*
                   </label>
                   <input
+                    {...register("address", {
+                      required: "Address is required",
+                    })}
                     type="text"
-                    name="address"
                     id="address"
-                    value={mutateState.address}
-                    onChange={(e) =>
-                      setMutateState((pre) => ({
-                        ...pre,
-                        address: e.target.value?.trim(),
-                      }))
-                    }
-                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500
-                    col-au
-                    "
                     placeholder="Toultompong1 , Khan Chamkamon Phnom Penh"
+                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900"
                   />
+                  {errors.address && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.address.message}
+                    </p>
+                  )}
                 </div>
+
                 <div className="error col-span-2">
                   {!state.success &&
                     Array.isArray(state?.message) &&
@@ -269,8 +264,6 @@ const CheckoutForm = () => {
                   <h3 className="text-xl font-semibold text-gray-900 dark:text-white my-2">
                     Payment
                   </h3>
-
-                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2"></div>
                 </div>
 
                 <dl className="flex items-center justify-between gap-4 py-3">
@@ -313,13 +306,7 @@ const CheckoutForm = () => {
 
             <div className="relative z-10">
               <PayPalButtons
-                className=""
-                disabled={!isEnable}
-                // onClick={() => {
-                //   if (isEnable) {
-                //     submitRef.current && submitRef.current?.click();
-                //   }
-                // }}
+                disabled={!isValid}
                 onApprove={(data) => onPaymentSuccess(data)}
                 createOrder={(data, actions) => {
                   return actions.order.create({
@@ -327,7 +314,7 @@ const CheckoutForm = () => {
                     purchase_units: [
                       {
                         amount: {
-                          value: subTotal?.toFixed(2)?.toString(),
+                          value: subTotal?.toFixed(2).toString(),
                           currency_code: "USD",
                         },
                       },

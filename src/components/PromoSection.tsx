@@ -1,6 +1,8 @@
+import Link from "next/link";
+
 export default function PromotionSection() {
   return (
-    <div className="relative overflow-hidden bg-white my-24 mb-12">
+    <div className="relative overflow-hidden bg-white my-56 mb-12">
       <div className="pt-16 pb-80 sm:pt-24 sm:pb-40 lg:pt-40 lg:pb-48">
         <div className="relative mx-auto max-w-7xl px-4 sm:static sm:px-6 lg:px-8">
           <div className="sm:max-w-lg">
@@ -80,12 +82,12 @@ export default function PromotionSection() {
                 </div>
               </div>
 
-              <a
-                href="/product"
+              <Link
+                href="/category"
                 className="inline-block rounded-md border border-transparent bg-blue-600 px-8 py-3 text-center font-medium text-white hover:bg-blue-700"
               >
                 Shop Collection
-              </a>
+              </Link>
             </div>
           </div>
         </div>

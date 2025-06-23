@@ -1,5 +1,6 @@
 "use client";
 
+import Breadcrumb from "@/app/_component/BreadCread";
 import { useGetOrderNumber } from "@/hook/useOrder";
 import dayjs from "dayjs";
 import { LoaderIcon } from "lucide-react";
@@ -43,8 +44,9 @@ const OrderSummary = ({ id }: { id: string }) => {
   }
 
   return (
-    <div className="px-4 md:px-6 2xl:px-20 2xl:container 2xl:mx-auto py-24 ">
-      <div className="flex justify-start item-start space-y-2 flex-col ">
+    <div className="px-4 md:px-0 container mx-auto max-w-3xl py-24 ">
+      <div className="flex justify-start item-start space-y-2 flex-col pt-4 md:pt-4 sm:px-0">
+        <Breadcrumb />
         <h1
           onClick={handleCopy}
           className="text-xl lg:text-xl font-semibold leading-7 lg:leading-9  text-gray-800 hover:cursor-pointer"

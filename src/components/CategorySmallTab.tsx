@@ -2,7 +2,7 @@
 import { CategoryData } from "@/types";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import React, { useRef } from "react";
 
 type Props = {
@@ -10,13 +10,10 @@ type Props = {
 };
 
 const CategorySmallTab: React.FC<Props> = ({ category }) => {
-  // const [mounted, setMounted] = useState(false);
   const scrollRef = useRef<HTMLUListElement>(null);
-  const pathName = usePathname();
-
-  const absPath = pathName.split("/")[2];
+  const searchParams = useSearchParams();
+  const selectedCategory = searchParams.get("name");
   const padding = category?.length >= 10 ? `px-10` : `px-0`;
-
   const scroll = (direction: "left" | "right") => {
     if (scrollRef.current) {
       const scrollAmount = 150;
@@ -46,9 +43,9 @@ const CategorySmallTab: React.FC<Props> = ({ category }) => {
         {category?.map((tab, i) => (
           <li key={i} className="hover:bg-blue-50 h-16 flex items-center">
             <Link
-              href={`/category/${tab?.attributes?.name}`}
+              href={`/category?name=${tab?.attributes?.name}`}
               className={`inline-block whitespace-nowrap px-4 py-5 rounded-lg ${
-                absPath?.toLowerCase() === tab?.attributes?.name
+                selectedCategory?.toLowerCase() === tab?.attributes?.name
                   ? "text-blue-500 rounded-none border-b-5 border-blue-500"
                   : "hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white rounded-none border-transparent border-b-5"
               }`}

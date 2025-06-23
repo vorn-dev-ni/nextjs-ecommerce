@@ -41,13 +41,13 @@ const HistoryOrderListing = () => {
   }
 
   return (
-    <div className="mt-6 flow-root">
-      <div className="divide-y divide-gray-200 dark:divide-gray-700">
+    <div className=" flow-root my-4 hover:cursor-pointer ">
+      <div className="divide-y divide-gray-200 dark:divide-gray-700 shadow-lg px-6 rounded-xl ">
         {data?.data?.map((order) => {
           return (
             <div
               key={order.id}
-              className="flex flex-wrap items-center gap-y-4 py-6"
+              className="flex flex-wrap items-center gap-y-4 py-6  "
             >
               <dl className="w-1/2 sm:w-1/4 lg:w-auto lg:flex-2">
                 <dt className="text-base font-medium text-gray-500 dark:text-gray-400">
