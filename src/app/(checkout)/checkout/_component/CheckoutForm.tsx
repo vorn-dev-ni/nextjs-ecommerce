@@ -43,10 +43,8 @@ const CheckoutForm = () => {
   const [isLoading, setLoading] = useState(false);
   const [mutateState, setMutateState] = useState<OrderState>(defaultState);
 
-  // Initialize react-hook-form
   const {
     register,
-    handleSubmit,
     setValue,
     watch,
     formState: { errors, isValid },

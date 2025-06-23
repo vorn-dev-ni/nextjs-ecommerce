@@ -74,12 +74,7 @@ const SearchBar = () => {
   };
 
   return (
-    <form
-      className="flex w-full"
-      method="GET"
-      onSubmit={handleSubmit}
-      action=""
-    >
+    <form className="flex w-full" method="GET" onSubmit={handleSubmit}>
       <label htmlFor="simple-search" className="sr-only">
         Search
       </label>

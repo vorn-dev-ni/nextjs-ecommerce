@@ -26,7 +26,6 @@ const AuthenticatedTabBar = () => {
       <DropdownMenuContent className="">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {/* <DropdownMenuItem>Profile</DropdownMenuItem> */}
         <DropdownMenuItem
           onClick={() => {
             router.push("/order-history");

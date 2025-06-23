@@ -130,25 +130,32 @@ const Cart = ({
 
   return (
     <section>
-      <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+      <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-2 lg:px-8">
         {loading && <LoadingSpinner />}
         {carts?.length ? (
           <div className="mx-auto max-w-3xl">
             <div className="mt-0">
               <ul className="space-y-4">
-                {carts?.map((cart) => (
-                  <li className="flex items-center gap-4" key={cart?.id}>
+                {carts?.map((cart, index) => (
+                  <li
+                    className={`block items-center gap-4 pb-4 md:pt-0 ${
+                      index < carts.length - 1
+                        ? "border-b-1 border-gray-100"
+                        : ""
+                    }`}
+                    key={cart?.id}
+                  >
                     <Image
                       src={`${cart?.attributes?.product_variant?.data?.attributes?.image?.data?.attributes?.url}`}
                       alt=""
                       width={100}
                       height={100}
                       priority
-                      className="size-16 rounded-sm object-cover"
+                      className="rounded-sm object-cover w-[400px] h-full md:size-16 border-1 border-gray-300 mb-4"
                     />
 
-                    <div>
-                      <p className="text-sm">
+                    <div className=" md:my-0">
+                      <p className="text-sm  md:pt-0 line-clamp-1 ">
                         {
                           cart?.attributes?.product_variant?.data?.attributes
                             ?.sku
@@ -181,7 +188,7 @@ const Cart = ({
                       </dl>
                     </div>
 
-                    <div className="flex flex-1 items-center justify-end gap-2">
+                    <div className="flex flex-1 items-center md:justify-end gap-2 my-3 md:my-0">
                       <div className="flex items-center gap-2">
                         <Button
                           onClick={() => handleDecrease(cart)}
@@ -279,7 +286,7 @@ const Cart = ({
                   <div className="flex w-full">
                     <button
                       onClick={onCheckout}
-                      className="block rounded-sm bg-blue-700 px-5 py-3 text-sm text-gray-100 transition hover:bg-blue-600"
+                      className="block rounded-sm bg-blue-700 px-5 py-3 text-sm text-gray-100 transition hover:bg-blue-600 w-full"
                     >
                       Checkout
                     </button>

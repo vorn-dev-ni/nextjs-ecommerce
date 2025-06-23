@@ -244,12 +244,12 @@ export default function ProductFilterTailwind({
             <div className="bg-white rounded my-3  pb-2">
               <div className="flex justify-between">
                 <div className="px-4 py-2 font-medium">Filters</div>
-                <button
+                <div
                   className="px-4 py-3 font-light text-sm text-red-400 hover:cursor-pointer"
                   onClick={onClearFilter}
                 >
                   Clear All
-                </button>
+                </div>
               </div>
 
               <div className="flex flex-wrap gap-2 px-4 hover:cursor-pointer">

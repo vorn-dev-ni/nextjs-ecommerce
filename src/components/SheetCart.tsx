@@ -21,7 +21,7 @@ const SheetCart = () => {
   const userCarts = useAtomValue(userCartsAtom);
 
   return (
-    <Sheet open={open} onOpenChange={setOpen} modal>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <main className="relative">
           <ShoppingCart />
