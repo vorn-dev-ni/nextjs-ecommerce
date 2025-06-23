@@ -1,7 +1,9 @@
+"use client";
+
 import { filterAtom } from "@/lib/atom";
 import { CategoriesResponse } from "@/types";
 import { useAtom } from "jotai";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
 const CategoryListingFilter = ({

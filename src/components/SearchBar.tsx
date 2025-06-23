@@ -5,7 +5,7 @@ import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { debounce } from "lodash";
 import { Search, ShoppingBag, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useCallback, useRef, useState } from "react";
+import { Suspense, useCallback, useRef, useState } from "react";
 import ClearIconButton from "./ClearIconButton";
 import NotFoundProduct from "@/app/_component/cart/NotFoundProduct";
 
@@ -218,7 +218,9 @@ const SearchBar = () => {
           </ul>
         )}
 
-        <ClearIconButton onClear={() => setShowSuggestions(false)} />
+        <Suspense>
+          <ClearIconButton onClear={() => setShowSuggestions(false)} />
+        </Suspense>
       </div>
       {showSuggestions && (
         <div

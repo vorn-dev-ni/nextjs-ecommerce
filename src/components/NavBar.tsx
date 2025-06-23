@@ -3,6 +3,7 @@ import Image from "next/image";
 import CategorySmallTab from "./CategorySmallTab";
 import LoginBar from "./LoginBar";
 import SearchBar from "./SearchBar";
+import { Suspense } from "react";
 
 const NavBar = async () => {
   const categories = await getCategories();
@@ -25,14 +26,18 @@ const NavBar = async () => {
           </div>
         </a>
         <div className=" w-[70%] hidden lg:block px-12">
-          <SearchBar />
+          <Suspense>
+            <SearchBar />
+          </Suspense>
         </div>
 
         <div className="  hidden  md:flex md:order-2 items-center justify-end mr-2">
           <LoginBar />
         </div>
         <div className=" w-[100%] block md:w-[70%] px-0 md:px-12 lg:hidden my-6">
-          <SearchBar />
+          <Suspense>
+            <SearchBar />
+          </Suspense>
         </div>
       </div>
       <CategorySmallTab category={categories?.data} />

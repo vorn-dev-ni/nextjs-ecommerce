@@ -1,6 +1,7 @@
 import { getCategories } from "@/action/Category.action";
 import Breadcrumb from "@/app/_component/BreadCread";
 import ProductFilterTailwind from "./ProductFilter";
+import { Suspense } from "react";
 
 const CategoryByProduct = async () => {
   const categories = await getCategories();
@@ -19,7 +20,9 @@ const CategoryByProduct = async () => {
         </div>
       </section>
 
-      <ProductFilterTailwind categories={categories} />
+      <Suspense>
+        <ProductFilterTailwind categories={categories} />
+      </Suspense>
     </div>
   );
 };

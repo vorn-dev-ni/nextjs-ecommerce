@@ -8,7 +8,10 @@ import { Suspense } from "react";
 export default async function Home() {
   return (
     <div className="w-screen">
-      <NavBar />
+      <Suspense>
+        <NavBar />
+      </Suspense>
+
       <PromotionSection />
       <main className="flex flex-col items-center w-full min-h-screen">
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

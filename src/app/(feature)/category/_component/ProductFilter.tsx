@@ -2,12 +2,12 @@
 import NotFoundProduct from "@/app/_component/cart/NotFoundProduct";
 import ProductItem from "@/components/ProductItem";
 import { useFilterCategory } from "@/hook/useCategory";
-import { clearButtonDomAtom, defaultFilter, filterAtom } from "@/lib/atom";
+import { filterAtom } from "@/lib/atom";
 import { CategoriesResponse } from "@/types";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom } from "jotai";
 import debounce from "lodash/debounce";
 import { X } from "lucide-react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import RangeSlider from "react-range-slider-input";
@@ -28,9 +28,7 @@ export default function ProductFilterTailwind({
     filters,
     enabled: true,
   });
-  const btnClearSearch = useAtomValue(clearButtonDomAtom);
   const pathName = usePathname();
-  const router = useRouter();
   const [colorFilters, setColorFilter] = useState<any[]>([]);
   const [sizeFilters, setSizesFilters] = useState<string[]>([]);
   const [rangeSlideKey, setrangeSlideKey] = useState(0);
@@ -153,9 +151,6 @@ export default function ProductFilterTailwind({
     [data]
   );
 
-  function removeSearch(): void {
-    btnClearSearch?.click();
-  }
   useEffect(() => {
     if (!isLoading && data) {
       const sizes = data?.data?.flatMap((item) => {
@@ -208,8 +203,6 @@ export default function ProductFilterTailwind({
           : "desc"
         : "desc",
     }));
-
-    console.log("RUN");
   }, []);
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);

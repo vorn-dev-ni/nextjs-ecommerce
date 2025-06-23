@@ -15,7 +15,7 @@ const Page = () => {
           Got a technical issue? Want to send feedback about a beta feature?
           Need details about our Business plan? Let us know.
         </p>
-        <form action="#" className="space-y-8">
+        <form className="space-y-8">
           <div>
             <label
               htmlFor="email"
