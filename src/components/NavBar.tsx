@@ -11,7 +11,7 @@ const NavBar = async () => {
 
   return (
     <nav className="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
-      <div className="container mx-auto px-4 md:flex my-8 items-center">
+      <div className="container mx-auto px-4 md:flex mt-8 items-center">
         <div className="flex items-center space-x-3 rtl:space-x-reverse">
           <Link href="/" className="flex gap-2 md:gap-4 items-center w-full">
             <Image
@@ -29,13 +29,13 @@ const NavBar = async () => {
           </div>
         </div>
 
-        <div className=" w-[70%] hidden lg:block px-12">
+        <div className=" w-full hidden lg:block pl-14 pr-6">
           <Suspense>
             <SearchBar />
           </Suspense>
         </div>
 
-        <div className=" w-[100%] block md:w-[350px] grow-0 px-0  lg:hidden my-6 ">
+        <div className=" w-[100%] block md:w-full grow-0 px-0  lg:hidden my-6 md:pl-14 md:pr-6">
           <Suspense>
             <SearchBar />
           </Suspense>

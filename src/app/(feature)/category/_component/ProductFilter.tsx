@@ -1,4 +1,12 @@
 "use client";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import NotFoundProduct from "@/app/_component/cart/NotFoundProduct";
 import ProductItem from "@/components/ProductItem";
 import { useFilterCategory } from "@/hook/useCategory";
@@ -6,7 +14,7 @@ import { filterAtom } from "@/lib/atom";
 import { CategoriesResponse } from "@/types";
 import { useAtom } from "jotai";
 import { debounce } from "lodash";
-import { X } from "lucide-react";
+import { Filter, FilterIcon, X } from "lucide-react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Skeleton from "react-loading-skeleton";
@@ -235,12 +243,12 @@ export default function ProductFilterTailwind({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-800 ">
+    <div className=" bg-gray-50 text-gray-800 ">
       {/* Content*/}
-      <div className="container mx-auto px-4 py-6">
+      <div className=" md:block container mx-auto px-4 py-6">
         <div className="flex flex-col lg:flex-row -mx-4">
           {/* Categories*/}
-          <aside className="w-full lg:w-1/4 px-4 mb-6 lg:mb-0">
+          <aside className="hidden md:block w-full lg:w-1/4 px-4 mb-6 lg:mb-0">
             <div className="bg-white rounded my-3  pb-2">
               <div className="flex justify-between">
                 <div className="px-4 py-2 font-medium">Filters</div>
@@ -376,12 +384,13 @@ export default function ProductFilterTailwind({
           {/* Products*/}
           <main className="w-full lg:w-3/4 px-4">
             <div className="flex flex-row items-center justify-between mb-4">
-              <span>{data?.data?.length} Items found</span>
+              <span className="text-sm md:text-md pt-2 md:pt-0">
+                {data?.data?.length} Items found
+              </span>
               <div className="flex items-center space-x-2 mt-2 sm:mt-0">
                 <select
-                  // defaultValue={filters?.orderBy}
                   value={filters?.orderBy}
-                  className="border  px-3 py-2 focus:outline-none bg-white rounded-lg"
+                  className="form-select block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                   onChange={(event) => {
                     const sortBy = event.currentTarget.value;
                     setFilters((pre) => ({ ...pre, orderBy: sortBy }));
@@ -399,6 +408,172 @@ export default function ProductFilterTailwind({
                   <option value={"desc"}>Descending</option>
                   <option value={"asc"}>Ascending</option>
                 </select>
+
+                <Sheet>
+                  <SheetTrigger asChild>
+                    <button
+                      className=" md:hidden text-white bg-blue-700 hover:bg-blue-800 focus:ring-0 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                      type="button"
+                    >
+                      Filters
+                      <Filter className="ml-2 w-4 h-4" />
+                    </button>
+                  </SheetTrigger>
+                  <SheetContent>
+                    <SheetHeader>
+                      <SheetTitle>Filters</SheetTitle>
+                      <SheetDescription asChild>
+                        <aside className=" w-full lg:w-full">
+                          <div className="bg-white rounded my-3  pb-2">
+                            <div className="flex justify-between">
+                              <div className="px-4 py-2 font-medium">
+                                Filters
+                              </div>
+                              <div
+                                className="px-4 py-3 font-light text-sm text-red-400 hover:cursor-pointer"
+                                onClick={onClearFilter}
+                              >
+                                Clear All
+                              </div>
+                            </div>
+
+                            <div className="flex flex-wrap gap-2 px-4 hover:cursor-pointer">
+                              {filters?.size?.map((size) => (
+                                <span
+                                  key={size}
+                                  className="flex items-center px-3 py-1 rounded-sm border-2"
+                                >
+                                  {size}
+                                  <button
+                                    onClick={() => removeSize(size)}
+                                    className="ml-1 hover:cursor-pointer"
+                                  >
+                                    <X className="w-5 h-4 text-gray-500" />
+                                  </button>
+                                </span>
+                              ))}
+
+                              {filters?.categorySlug &&
+                                filters?.categorySlug != "all" && (
+                                  <span
+                                    onClick={() => {
+                                      removeCategory();
+                                    }}
+                                    className="flex items-center px-3 py-1 rounded-sm border-2"
+                                  >
+                                    {filters?.categorySlug}
+                                    <button
+                                      onClick={() => {
+                                        removeCategory();
+                                      }}
+                                      className="ml-1 hover:cursor-pointer"
+                                    >
+                                      <X className="w-5 h-4 text-gray-500" />
+                                    </button>
+                                  </span>
+                                )}
+                              {filters?.color?.length
+                                ? filters.color.map((colorLabel) => (
+                                    <span
+                                      onClick={() => removeColor(colorLabel)}
+                                      key={colorLabel}
+                                      className="flex items-center px-3 py-1 rounded-sm border-2 hover:cursor-pointer"
+                                    >
+                                      {colorLabel}
+                                      <button
+                                        onClick={() => removeColor(colorLabel)}
+                                        className="ml-1 hover:cursor-pointer"
+                                      >
+                                        <X className="w-5 h-4 text-gray-500" />
+                                      </button>
+                                    </span>
+                                  ))
+                                : null}
+
+                              {filters.maxPrice != 1000 ||
+                              filters.minPrice != 1 ? (
+                                <span
+                                  onClick={() => removePrice()}
+                                  className="flex items-center  px-3 py-1 rounded-sm border-2  hover:cursor-pointer"
+                                >
+                                  ${filters.minPrice} - ${filters.maxPrice}
+                                  <button
+                                    onClick={() => removePrice()}
+                                    className="ml-2  hover:cursor-pointer"
+                                  >
+                                    <X className="w-5 h-4 text-gray-500" />
+                                  </button>
+                                </span>
+                              ) : null}
+                            </div>
+                          </div>
+                          <div className="bg-white rounded">
+                            <div className="px-4 py-3 font-medium">
+                              Categories
+                            </div>
+                            <CategoryListingFilter categories={categories} />
+                          </div>
+
+                          {/* Price Range */}
+                          <section className="bg-white rounded my-4 pb-5">
+                            <div className="px-4 py-3 font-medium mb-2">
+                              Price ranges
+                            </div>
+                            <div className="px-4">
+                              <RangeSlider
+                                min={1}
+                                max={1000}
+                                step={10}
+                                value={[
+                                  filters.minPrice ?? 0,
+                                  filters.maxPrice ?? 1000,
+                                ]}
+                                key={rangeSlideKey}
+                                onInput={handlePriceChange}
+                              />
+                              <div className="flex justify-between py-2">
+                                <p className="text-md">
+                                  ${filters.minPrice ?? 0}
+                                </p>
+                                <p className="text-md">
+                                  ${filters.maxPrice ?? 500}
+                                </p>
+                              </div>
+                            </div>
+                          </section>
+
+                          {/* Sizes */}
+
+                          {sizeFilters?.length ? (
+                            <div className="bg-white rounded ">
+                              <div className="px-4 py-3 font-medium">Sizes</div>
+                              <div className="px-4 pb-4 flex flex-wrap gap-2">
+                                {sizeFilters.map((size) => (
+                                  <button
+                                    key={size}
+                                    onClick={() => toggleSize(size)}
+                                    className={`px-3 py-1 border rounded ${
+                                      filters?.size?.includes(size)
+                                        ? "bg-blue-600 text-white"
+                                        : "bg-white text-gray-700"
+                                    }`}
+                                  >
+                                    {size}
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+                          ) : null}
+
+                          {/* Colors */}
+                          {colorFilters?.length ? (
+                            <ColorFilter colors={colorFilters} />
+                          ) : null}
+                        </aside>
+                      </SheetDescription>
+                    </SheetHeader>
+                  </SheetContent>
+                </Sheet>
               </div>
             </div>
             {isLoading ? (
